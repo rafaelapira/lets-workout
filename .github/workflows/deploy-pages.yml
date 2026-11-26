@@ -3,10 +3,8 @@ name: Deploy Let's Workout PWA
 
 on:
   push:
-    branches: [main]
-    paths:
-      - 'www/**'
-      - '.github/workflows/deploy-pages.yml'
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -23,20 +21,22 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload PWA
+      - name: Upload PWA files
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './www'
+          name: github-pages
+          path: ./www
 
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
